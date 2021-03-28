@@ -48,7 +48,7 @@ function loopthis() {
 function render() {
 
     // just a reference gotta clone this array (pg) into other array so that a tick represents an instantaneous change in all variables at the same time 
-    // see comment 2.
+    // see comment 2. asdasdasd
 
     var pgf = [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
