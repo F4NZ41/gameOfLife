@@ -1,21 +1,44 @@
-const width = 75;
-const height = 75;
-const pxs = 16;
+const width = 120;
+const height = 90;
+const pxs = 10;
 
-var numbson = true;
+var numbson = false;
 
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
 
 var pg = [];
 
+// use pattern??
+
+var pat = [
+    [1,1,1,0,1],
+    [1,0,0,0,0],
+    [0,0,0,1,1],
+    [0,1,1,0,1],
+    [1,0,1,0,1],
+];
+
+// init clean array
+
+// -------------------------------------
+//  NOTE TO FUTURE SELF:
+//    console.log() is a SOO FUCKING SLOW.
+//
+
 for(var i = 0; i < height; i++) {
     var pg1 = [];
     for(var j = 0; j < width; j++) {
-        var zeroone = Math.floor(Math.random()*2);
-        pg1.push(zeroone)
+        //var zeroone = Math.floor(Math.random()*2);
+        pg1.push(0)
     }
     pg.push(pg1);
+}
+
+for(var i = 0; i < 5; i++) {
+    for(var j = 0; j < 5; j++) {
+        pg[i+50][j+60] = pat[i][j];
+    }
 }
 
 console.log(pg)
@@ -24,11 +47,16 @@ function loopthis() {
     setInterval(render, 1);
 }
 
+var timenow;
 
 function render() {
 
+    // console.log((Date.now()-timenow)*0.001)
+
     // just a reference gotta clone this array (pg) into other array so that a tick represents an instantaneous change in all variables at the same time 
     // see comment 2. this is the branmh
+
+    // init changes array
 
     var pgf = [];
 
@@ -41,12 +69,15 @@ function render() {
     }
 
     
+    // transfer values from actual array to changes array
 
     for(var i = 0; i < height; i++) {
         for(var j = 0; j < width; j++) {
             pgf[i][j] = pg[i][j]
         }
     }
+
+    // drawing and calculating next screen/tick
 
     for(var i = 0; i < height; i++) {
         for(var j = 0; j < width; j++) {
@@ -55,21 +86,15 @@ function render() {
 
             var n = 0;
 
-            try { if (pg[i-1][j-1]==1){n++}} catch {console.log("catch xd")}
-            try { if (pg[i-1][j]==1) {n++} } catch {console.log("catch xd")}
-            try { if(pg[i-1][j+1]==1) {n++}} catch {console.log("catch xd")}
-            try { if (pg[i][j-1]==1) {n++} } catch {console.log("catch xd")}
-            try { if (pg[i][j+1]==1) {n++} } catch {console.log("catch xd")}
-            try { if(pg[i+1][j-1]==1) {n++}} catch {console.log("catch xd")}
-            try { if (pg[i+1][j]==1) {n++} } catch {console.log("catch xd")}
-            try { if(pg[i+1][j+1]==1) {n++}} catch {console.log("catch xd")}
-            
-
-
-            console.log(n, i, j)
-
-            console.log(pg[i][j]);
-            
+            try { if (pg[i-1][j-1]==1){n++}} catch {}
+            try { if (pg[i-1][j]==1) {n++} } catch {}
+            try { if(pg[i-1][j+1]==1) {n++}} catch {}
+            try { if (pg[i][j-1]==1) {n++} } catch {}
+            try { if (pg[i][j+1]==1) {n++} } catch {}
+            try { if(pg[i+1][j-1]==1) {n++}} catch {}
+            try { if (pg[i+1][j]==1) {n++} } catch {}
+            try { if(pg[i+1][j+1]==1) {n++}} catch {}
+        
 
             if(pg[i][j]==1) {
                 ctx.fillRect(j*pxs,i*pxs,pxs,pxs)
@@ -83,7 +108,7 @@ function render() {
             if(numbson) {
                 switch(n) {
                     case 0:
-                        ctx.fillStyle = "white";
+                        ctx.fillStyle = "lightgray";
                         break;
                     case 1:
                         ctx.fillStyle = "red";
@@ -108,10 +133,7 @@ function render() {
                         break;
                     case 8:
                         ctx.fillStyle = "red";
-                        break;
-                    
-
-                    
+                        break; 
                 }
                 
                 ctx.font = "15px Consolas";
@@ -138,6 +160,8 @@ function render() {
         }
     }
     
+    // timenow = Date.now();
+
     // comment 2.
     pg = pgf;
 }
